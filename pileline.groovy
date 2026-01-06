@@ -34,7 +34,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                echo "build-sucess"
+                sh 'mvn clean package'
             }
         }
         stage('Test') {
