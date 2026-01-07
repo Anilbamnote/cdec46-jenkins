@@ -39,7 +39,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-               sh 'mvn clean verify sonar:sonar   -Dsonar.projectKey=new-studentapp   -Dsonar.host.url=http://18.201.46.245:9000   -Dsonar.login=ff9e6db00882d3b4203e67ca3f7e9c0dd93ef7ba'
+               sh '/opt/maven/bin/mvn clean verify sonar:sonar   -Dsonar.projectKey=new-studentapp   -Dsonar.host.url=http://18.201.46.245:9000   -Dsonar.login=ff9e6db00882d3b4203e67ca3f7e9c0dd93ef7ba'
             }
         }
         stage('Deploy') {
