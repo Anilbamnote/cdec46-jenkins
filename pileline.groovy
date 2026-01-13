@@ -1,19 +1,29 @@
 // pipeline {
-//     agent any
+//     agent {label 'slave'}
 //     stages {
 //         stage('git-pull') {
 //             steps {
-//                 echo "pull-sucess"
+//                 git branch: 'main', url: 'https://github.com/Anilbamnote/student-ui-app.git'
 //             }
 //         }
 //         stage('Build') {
 //             steps {
-//                 echo "build-sucess"
+//                 sh '/opt/maven/bin/mvn clean package'
 //             }
 //         }
 //         stage('Test') {
 //             steps {
-//                 echo "test sucess"
+//                 withSonarQubeEnv(installationName: 'sonar',credentialsId: 'sonar-cred') {
+//                    sh '/opt/maven/bin/mvn clean verify sonar:sonar '
+//             }
+//             timeout(10) {
+ 
+//              }
+//             waitForQualityGate true
+// //                 sh '''mvn sonar:sonar \\
+// //   -Dsonar.projectKey=new-studentapp \\
+// //   -Dsonar.host.url=http://18.136.198.29:9000 \\
+// //   -Dsonar.login=1ba13fa4dcfefe9143576f522bb4ea433f13bde9'''
 //             }
 //         }
 //         stage('Deploy') {
@@ -55,15 +65,15 @@ pipeline {
                waitForQualityGate true
             }
         }
-         stage('Artifact_upload') {
-            steps {
-                sh 'aws s3 cp target/studentapp-2.2-SNAPSHOT.war     s3://terrr-buck665598'
-            }
-        }
+        //  stage('Artifact_upload') {
+        //     steps {
+        //         sh 'aws s3 cp target/studentapp-2.2-SNAPSHOT.war     s3://terrr-buck665598'
+        //     }
+        // }
 
         stage('Deploy') {
             steps {
-                echo "deploy sucess"
+                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat-cred', path: '', url: 'http://108.130.178.174:8080/')], contextPath: '/', war: '**/*.war'
             }
         }
     }
